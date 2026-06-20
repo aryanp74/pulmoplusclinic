@@ -4,7 +4,7 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://pulmoplus.in",
+  site: "https://pulmoplusclinic.com",
   adapter: node({
     mode: "standalone"
   }),
