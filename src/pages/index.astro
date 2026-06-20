@@ -1,0 +1,919 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { clinic, doctor, actions } from "@data/site";
+import { services } from "@data/services";
+import { testimonials } from "@data/testimonials";
+
+const featuredServices = services.slice(0, 6);
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "PulmoPlus respiratory and sleep care in Noida",
+  description:
+    "PulmoPlus helps patients with respiratory, sleep, critical care and general medical concerns in Noida."
+};
+---
+
+<BaseLayout
+  title="PulmoPlus | Advanced Respiratory, Sleep and Chest Care in Noida"
+  description="PulmoPlus is a respiratory, sleep, critical care and general medicine clinic in Noida led by Dr. Priyadarshi J. Kumar."
+  structuredData={homeSchema}
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-visual" aria-hidden="true">
+      <div class="breath-orb"></div>
+      <div class="wave-line">
+        <svg viewBox="0 0 420 90" role="img">
+          <path
+            d="M5 46 C45 46 50 18 78 18 C110 18 102 72 136 72 C168 72 165 28 198 28 C235 28 224 58 262 58 C298 58 294 35 326 35 C358 35 366 46 415 46"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-dasharray="220"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-inner">
+      <p class="eyebrow">Respiratory, sleep and chest care in Noida</p>
+      <h1 id="hero-title">PulmoPlus</h1>
+      <p class="hero-line">Advanced respiratory care, made calm.</p>
+      <p class="hero-copy">
+        Led by {doctor.name}, PulmoPlus brings 20+ years of respiratory,
+        critical care, sleep medicine and interventional pulmonology experience
+        to patients and families in Noida.
+      </p>
+
+      <div class="hero-actions" aria-label="Primary actions">
+        <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary-action focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+
+      <dl class="hero-stats" aria-label="Doctor experience highlights">
+        {doctor.stats.map((stat) => (
+          <div>
+            <dt>{stat.value}</dt>
+            <dd>{stat.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section intro" aria-labelledby="intro-title">
+    <div class="container intro-grid">
+      <div>
+        <p class="eyebrow">Why patients come here</p>
+        <h2 id="intro-title">When symptoms need time, experience and a deeper look.</h2>
+      </div>
+      <div class="intro-copy">
+        <p>
+          Many patients arrive after recurring cough, breathlessness, poor sleep,
+          unresolved chest symptoms or reports that need careful explanation.
+          PulmoPlus is built around listening first, reviewing details patiently
+          and guiding the next step without confusion.
+        </p>
+        <a class="text-action focus-ring" href="/patient-guide/">Read the first visit guide</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section services-section" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Care areas</p>
+        <h2 id="services-title">Find care by the way patients actually search.</h2>
+        <p>
+          Simple entry points for breathing issues, sleep concerns, advanced
+          pulmonary procedures and general medical care.
+        </p>
+      </div>
+
+      <div class="service-grid">
+        {featuredServices.map((service) => (
+          <a class="service-card focus-ring" href={`/services/${service.slug}/`}>
+            <span>{service.category}</span>
+            <h3>{service.title}</h3>
+            <p>{service.summary}</p>
+            <ul aria-label={`Common reasons for ${service.title}`}>
+              {service.symptoms.slice(0, 3).map((symptom) => (
+                <li>{symptom}</li>
+              ))}
+            </ul>
+          </a>
+        ))}
+      </div>
+
+      <div class="center-action">
+        <a class="text-action focus-ring" href="/services/">View all services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section doctor-section" aria-labelledby="doctor-title">
+    <div class="container doctor-grid">
+      <div class="doctor-media">
+        <img
+          class="doctor-photo"
+          src={doctor.featureImage ?? doctor.portrait}
+          alt="Dr. Priyadarshi J. Kumar at PulmoPlus"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="doctor-copy">
+        <p class="eyebrow">About the doctor</p>
+        <h2 id="doctor-title">Clinical depth with the patience to explain.</h2>
+        <p>
+            {doctor.longBio}
+        </p>
+
+        <blockquote>
+          “{doctor.philosophy}”
+        </blockquote>
+
+        <div class="credential-list">
+          {doctor.education.slice(0, 4).map((item) => (
+            <p>{item}</p>
+          ))}
+        </div>
+
+        <a class="primary-action focus-ring" href="/about/">Meet Dr. Kumar</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section inside-section" aria-labelledby="inside-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Inside PulmoPlus</p>
+        <h2 id="inside-title">A calm clinical setting built for focused respiratory care.</h2>
+        <p>
+          A closer look at the doctor-led consultation environment, care spaces and
+          the tone patients experience during visits.
+        </p>
+      </div>
+
+      <div class="inside-grid">
+        <figure class="inside-card inside-card-large">
+          <img
+            src={doctor.consultationImage}
+            alt="Dr. Priyadarshi J. Kumar during a consultation at PulmoPlus"
+            loading="lazy"
+          />
+          <figcaption>Doctor-led consultation with time for symptoms, reports and explanation.</figcaption>
+        </figure>
+
+        <figure class="inside-card">
+          <img
+            src={clinic.consultationRoomImage}
+            alt="PulmoPlus consultation room in Noida"
+            loading="lazy"
+          />
+          <figcaption>Consultation room designed for private, detailed clinical review.</figcaption>
+        </figure>
+
+        <figure class="inside-card">
+          <img
+            src={clinic.waitingAreaImage}
+            alt="PulmoPlus waiting area in Noida"
+            loading="lazy"
+          />
+          <figcaption>Waiting area kept simple, calm and easy for patients and families.</figcaption>
+        </figure>
+
+        <figure class="inside-card">
+          <img
+            src={doctor.interviewImage}
+            alt="Dr. Priyadarshi J. Kumar in a clinic interview setting"
+            loading="lazy"
+          />
+          <figcaption>Clinical conversations focused on listening first and guiding clearly.</figcaption>
+        </figure>
+
+        <figure class="inside-card">
+          <img
+            src={doctor.featureImage ?? doctor.portrait}
+            alt="Dr. Priyadarshi J. Kumar in the clinic at PulmoPlus"
+            loading="lazy"
+          />
+          <figcaption>Doctor profile within the clinic environment patients encounter during visits.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section visit-section" aria-labelledby="visit-title">
+    <div class="container visit-grid">
+      <div>
+        <p class="eyebrow">First visit</p>
+        <h2 id="visit-title">Bring what you have. We will help organize the story.</h2>
+        <p>
+          Previous prescriptions, test reports, scans, sleep studies and even a
+          short note about symptoms can help the consultation become clearer.
+        </p>
+      </div>
+
+      <ol class="visit-steps">
+        <li>
+          <span>01</span>
+          <strong>Book or call</strong>
+          <p>Request a consultation online, through WhatsApp or by calling the clinic.</p>
+        </li>
+        <li>
+          <span>02</span>
+          <strong>Bring reports</strong>
+          <p>Carry prescriptions, scans, sleep studies and recent blood or lung tests.</p>
+        </li>
+        <li>
+          <span>03</span>
+          <strong>Review patiently</strong>
+          <p>The doctor studies symptoms, history and reports before planning next steps.</p>
+        </li>
+        <li>
+          <span>04</span>
+          <strong>Leave with clarity</strong>
+          <p>You receive practical guidance, treatment direction and follow-up advice.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section testimonials-section" aria-labelledby="testimonial-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Patient voices</p>
+        <h2 id="testimonial-title">Care should feel clear, not rushed.</h2>
+      </div>
+
+      <div class="testimonial-grid">
+        {testimonials.map((testimonial) => (
+          <figure>
+            <blockquote>{testimonial.quote}</blockquote>
+            <figcaption>
+              <strong>{testimonial.name}</strong>
+              <span>{testimonial.condition}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section location-section" aria-labelledby="location-title">
+    <div class="container location-grid">
+      <div>
+        <p class="eyebrow">Visit PulmoPlus</p>
+        <h2 id="location-title">Sector 134, Noida</h2>
+        <p>{clinic.address}</p>
+
+        <div class="location-actions">
+          <a class="primary-action focus-ring" href={actions.directions} target="_blank" rel="noreferrer">
+            Get directions
+          </a>
+          <a class="secondary-action focus-ring" href={actions.call}>
+            Call {clinic.phone}
+          </a>
+        </div>
+      </div>
+
+      <div class="hours-panel">
+        <h3>Consultation timings</h3>
+        {clinic.consultationHours.map((item) => (
+          <p>{item}</p>
+        ))}
+        <small>{clinic.openingNote}</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta" aria-labelledby="final-title">
+    <div class="container final-inner">
+      <p class="eyebrow">Start here</p>
+      <h2 id="final-title">Start with a conversation. We will help you find the next right step.</h2>
+      <div class="hero-actions">
+        <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary-action focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100svh - 76px);
+    overflow: hidden;
+    background:
+      linear-gradient(90deg, rgba(247, 244, 239, 0.96) 0%, rgba(247, 244, 239, 0.82) 42%, rgba(238, 247, 247, 0.2) 100%),
+      radial-gradient(circle at 82% 44%, rgba(158, 223, 227, 0.86), transparent 34%),
+      radial-gradient(circle at 72% 64%, rgba(15, 111, 120, 0.18), transparent 34%),
+      #f7f4ef;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    width: min(1120px, calc(100% - 32px));
+    min-height: calc(100svh - 76px);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 0;
+  }
+
+  .hero h1 {
+    max-width: 760px;
+    margin: 16px 0 0;
+    color: #1d2b2e;
+    font-size: clamp(3.8rem, 11vw, 9rem);
+    line-height: 0.82;
+    letter-spacing: 0;
+    animation: rise 700ms ease-out both;
+  }
+
+  .hero-line {
+    max-width: 720px;
+    margin: 24px 0 0;
+    color: #0f6f78;
+    font-size: clamp(1.7rem, 4vw, 3.25rem);
+    line-height: 1.02;
+    font-weight: 850;
+    animation: rise 700ms 80ms ease-out both;
+  }
+
+  .hero-copy {
+    max-width: 620px;
+    margin: 22px 0 0;
+    color: #536b70;
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    animation: rise 700ms 150ms ease-out both;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+    animation: rise 700ms 220ms ease-out both;
+  }
+
+  .primary-action,
+  .secondary-action {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      background 180ms ease;
+  }
+
+  .primary-action {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary-action {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .primary-action:hover,
+  .secondary-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 900px;
+    margin: 52px 0 0;
+    animation: rise 700ms 300ms ease-out both;
+  }
+
+  .hero-stats div {
+    border-top: 1px solid rgba(15, 111, 120, 0.18);
+    padding-top: 14px;
+  }
+
+  .hero-stats dt {
+    color: #0f6f78;
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .hero-stats dd {
+    margin: 8px 0 0;
+    color: #536b70;
+    font-size: 0.88rem;
+    font-weight: 650;
+  }
+
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .breath-orb {
+    position: absolute;
+    right: max(24px, 8vw);
+    top: 19%;
+    width: min(42vw, 520px);
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 45% 42%, rgba(255, 255, 255, 0.96), transparent 24%),
+      radial-gradient(circle at 50% 50%, rgba(158, 223, 227, 0.82), rgba(43, 124, 145, 0.18) 48%, transparent 70%);
+    filter: blur(0.2px);
+    opacity: 0.88;
+    animation: breathe 8s ease-in-out infinite;
+  }
+
+  .breath-orb::before,
+  .breath-orb::after {
+    content: "";
+    position: absolute;
+    inset: 18%;
+    border: 1px solid rgba(15, 111, 120, 0.22);
+    border-radius: 62% 38% 52% 48%;
+  }
+
+  .breath-orb::after {
+    inset: 29%;
+    transform: rotate(35deg);
+    border-color: rgba(15, 111, 120, 0.14);
+  }
+
+  .wave-line {
+    position: absolute;
+    right: 7vw;
+    bottom: 13%;
+    width: min(44vw, 520px);
+    color: rgba(15, 111, 120, 0.25);
+  }
+
+  .wave-line path {
+    animation: wave 1400ms 350ms ease-out both;
+  }
+
+  .intro-grid,
+  .doctor-grid,
+  .visit-grid,
+  .location-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(36px, 6vw, 84px);
+    align-items: start;
+  }
+
+  .intro h2,
+  .section-head h2,
+  .doctor-copy h2,
+  .visit-section h2,
+  .location-section h2,
+  .final-cta h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    font-size: clamp(2.1rem, 5vw, 4.4rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .intro-copy p,
+  .section-head p,
+  .doctor-copy > p,
+  .visit-section p,
+  .location-section p {
+    margin: 0;
+    color: #536b70;
+    font-size: 1.06rem;
+  }
+
+  .text-action {
+    display: inline-flex;
+    margin-top: 24px;
+    color: #0f6f78;
+    font-weight: 850;
+  }
+
+  .services-section {
+    background: #ffffff;
+  }
+
+  .section-head {
+    max-width: 760px;
+    margin-bottom: 38px;
+  }
+
+  .section-head p {
+    margin-top: 18px;
+    max-width: 620px;
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .inside-section {
+    background: #ffffff;
+  }
+
+  .inside-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .inside-card {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(217, 231, 233, 0.95);
+    border-radius: 8px;
+    background: #f7f4ef;
+    box-shadow: 0 18px 50px rgba(29, 43, 46, 0.06);
+  }
+
+  .inside-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 260px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .inside-card-large {
+    grid-column: span 2;
+  }
+
+  .inside-card-large img {
+    min-height: 320px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .inside-card figcaption {
+    padding: 16px 18px 18px;
+    color: #536b70;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+
+  .service-card {
+    min-height: 290px;
+    border: 1px solid rgba(217, 231, 233, 0.95);
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 24px;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 111, 120, 0.28);
+    box-shadow: 0 18px 50px rgba(29, 43, 46, 0.1);
+  }
+
+  .service-card span {
+    color: #0f6f78;
+    font-size: 0.76rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .service-card h3 {
+    margin: 18px 0 10px;
+    color: #1d2b2e;
+    font-size: 1.45rem;
+    line-height: 1.08;
+  }
+
+  .service-card p {
+    margin: 0;
+    color: #536b70;
+  }
+
+  .service-card ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service-card li {
+    border-radius: 999px;
+    background: white;
+    color: #536b70;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    font-weight: 750;
+  }
+
+  .center-action {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .doctor-section {
+    background:
+      linear-gradient(180deg, #eef7f7 0%, #f7f4ef 100%);
+  }
+
+  .doctor-media {
+    position: sticky;
+    top: 104px;
+  }
+
+  .doctor-photo {
+    display: block;
+    width: 100%;
+    min-height: 620px;
+    max-height: 760px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 8px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .doctor-copy blockquote {
+    margin: 30px 0;
+    border-left: 3px solid #0f6f78;
+    padding-left: 20px;
+    color: #1d2b2e;
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+    line-height: 1.18;
+    font-weight: 750;
+  }
+
+  .credential-list {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .credential-list p {
+    margin: 0;
+    border-top: 1px solid rgba(15, 111, 120, 0.16);
+    padding-top: 11px;
+    color: #536b70;
+    font-weight: 700;
+  }
+
+  .visit-steps {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .visit-steps li {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 10px 18px;
+    border-top: 1px solid rgba(15, 111, 120, 0.16);
+    padding: 22px 0;
+  }
+
+  .visit-steps span {
+    grid-row: span 2;
+    color: #0f6f78;
+    font-weight: 900;
+  }
+
+  .visit-steps strong {
+    color: #1d2b2e;
+    font-size: 1.2rem;
+  }
+
+  .visit-steps p {
+    margin: 0;
+  }
+
+  .testimonials-section {
+    background: #ffffff;
+  }
+
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .testimonial-grid figure {
+    margin: 0;
+    border: 1px solid rgba(217, 231, 233, 0.96);
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 24px;
+  }
+
+  .testimonial-grid blockquote {
+    margin: 0;
+    color: #1d2b2e;
+    font-size: 1.08rem;
+    line-height: 1.5;
+  }
+
+  .testimonial-grid figcaption {
+    display: grid;
+    gap: 4px;
+    margin-top: 24px;
+  }
+
+  .testimonial-grid strong {
+    color: #0f6f78;
+  }
+
+  .testimonial-grid span {
+    color: #789097;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .location-section {
+    background: #eef7f7;
+  }
+
+  .location-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .hours-panel {
+    border-radius: 8px;
+    background: white;
+    padding: 30px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .hours-panel h3 {
+    margin: 0 0 18px;
+    color: #1d2b2e;
+    font-size: 1.45rem;
+  }
+
+  .hours-panel p {
+    margin: 0 0 10px;
+    color: #0f6f78;
+    font-size: 1.3rem;
+    font-weight: 850;
+  }
+
+  .hours-panel small {
+    display: block;
+    margin-top: 18px;
+    color: #536b70;
+  }
+
+  .final-cta {
+    padding: 96px 0;
+    background: #1d2b2e;
+    color: white;
+  }
+
+  .final-inner {
+    max-width: 860px;
+  }
+
+  .final-cta h2 {
+    color: white;
+  }
+
+  .final-cta .eyebrow {
+    color: #9edfe3;
+  }
+
+  .final-cta .secondary-action {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: transparent;
+    color: white;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: auto;
+    }
+
+    .hero-inner {
+      min-height: auto;
+      padding: 80px 0 48px;
+    }
+
+    .breath-orb {
+      right: -20vw;
+      top: 10%;
+      width: 70vw;
+      opacity: 0.48;
+    }
+
+    .wave-line {
+      display: none;
+    }
+
+    .hero-stats,
+    .service-grid,
+    .inside-grid,
+    .testimonial-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .intro-grid,
+    .doctor-grid,
+    .visit-grid,
+    .location-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .doctor-media {
+      position: static;
+    }
+
+    .inside-card-large {
+      grid-column: span 2;
+    }
+
+    .doctor-photo {
+      min-height: 460px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .hero-inner {
+      width: min(100% - 24px, 1120px);
+      padding-top: 64px;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.5rem, 18vw, 5.6rem);
+    }
+
+    .hero-actions a,
+    .location-actions a {
+      width: 100%;
+    }
+
+    .hero-stats,
+    .service-grid,
+    .inside-grid,
+    .testimonial-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-stats {
+      margin-top: 40px;
+    }
+
+    .service-card {
+      min-height: auto;
+    }
+
+    .inside-card-large {
+      grid-column: span 1;
+    }
+
+    .inside-card-large img,
+    .inside-card img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .doctor-photo {
+      min-height: 390px;
+    }
+
+    .visit-steps li {
+      grid-template-columns: 44px 1fr;
+    }
+
+    .final-cta {
+      padding: 72px 0;
+    }
+  }
+</style>

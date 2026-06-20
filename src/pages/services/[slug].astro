@@ -1,0 +1,465 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { services } from "@data/services";
+import { actions, clinic, doctor } from "@data/site";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service }
+  }));
+}
+
+const { service } = Astro.props;
+
+const relatedServices = services
+  .filter((item) => item.slug !== service.slug && item.category === service.category)
+  .slice(0, 3);
+
+const fallbackRelatedServices = services
+  .filter((item) => item.slug !== service.slug)
+  .slice(0, 3);
+
+const displayRelatedServices =
+  relatedServices.length > 0 ? relatedServices : fallbackRelatedServices;
+
+const whatsappUrl = `https://wa.me/91${clinic.whatsapp}?text=${encodeURIComponent(
+  `Hello PulmoPlus, I would like to ask about ${service.title}.`
+)}`;
+
+const serviceSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalProcedure",
+    name: service.title,
+    description: service.summary,
+    provider: {
+      "@type": "MedicalClinic",
+      name: clinic.name,
+      telephone: `+91${clinic.phone}`
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `When should I consult for ${service.title}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: service.whenToConsult
+        }
+      },
+      {
+        "@type": "Question",
+        name: `What should I expect during a ${service.title} consultation?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: service.whatToExpect
+        }
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={service.seoTitle}
+  description={service.seoDescription}
+  structuredData={serviceSchema}
+>
+  <section class="service-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">{service.category}</p>
+        <h1>{service.title}</h1>
+        <p class="lead">{service.summary}</p>
+
+        <div class="hero-actions">
+          <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+          <a class="secondary-action focus-ring" href={whatsappUrl} target="_blank" rel="noreferrer">
+            Ask about {service.title}
+          </a>
+        </div>
+      </div>
+
+      <aside class="quick-panel" aria-label="Quick service information">
+        <h2>Common reasons patients ask about this</h2>
+        <ul>
+          {service.symptoms.map((symptom) => (
+            <li>{symptom}</li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section service-body" aria-labelledby="service-body-title">
+    <div class="container content-grid">
+      <aside class="side-note">
+        <p class="eyebrow">PulmoPlus approach</p>
+        <p>
+          The goal is not to rush patients into labels. The goal is to understand
+          symptoms, reports and risk clearly before deciding what comes next.
+        </p>
+      </aside>
+
+      <div class="article-flow">
+        <h2 id="service-body-title" class="sr-only">Service details</h2>
+        <section aria-labelledby="overview-title">
+          <h2 id="overview-title">What this service means</h2>
+          <p>{service.summary}</p>
+        </section>
+
+        <section aria-labelledby="consult-title">
+          <h2 id="consult-title">When to consult</h2>
+          <p>{service.whenToConsult}</p>
+        </section>
+
+        <section aria-labelledby="expect-title">
+          <h2 id="expect-title">What happens during consultation</h2>
+          <p>{service.whatToExpect}</p>
+        </section>
+
+        <section aria-labelledby="doctor-title">
+          <h2 id="doctor-title">Why PulmoPlus is equipped for this</h2>
+          <p>
+            {doctor.name} brings more than 20 years of experience across respiratory
+            medicine, critical care, sleep medicine and interventional pulmonology.
+            His experience includes 2700+ bronchoscopies, 350+ EBUS procedures,
+            200+ medical thoracoscopies and 300+ scored sleep studies.
+          </p>
+        </section>
+
+        <section class="disclaimer" aria-labelledby="safety-title">
+          <h2 id="safety-title">Medical safety note</h2>
+          <p>
+            This page is educational and does not replace direct medical consultation.
+            If you have severe breathlessness, chest pain, bluish lips, confusion,
+            fainting or a medical emergency, seek urgent emergency care immediately.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="section related-section" aria-labelledby="related-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Related care</p>
+        <h2 id="related-title">Other services patients often explore</h2>
+      </div>
+
+      <div class="related-grid">
+        {displayRelatedServices.map((item) => (
+          <a class="related-card focus-ring" href={`/services/${item.slug}/`}>
+            <span>{item.category}</span>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta" aria-labelledby="final-title">
+    <div class="container final-inner">
+      <p class="eyebrow">Next step</p>
+      <h2 id="final-title">If this sounds close to what you are facing, start with a careful consultation.</h2>
+      <div class="hero-actions">
+        <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary-action focus-ring" href={whatsappUrl} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .service-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .hero-grid,
+  .content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: start;
+  }
+
+  .content-grid {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 840px;
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 3.6vw, 3.4rem);
+  }
+
+  .lead {
+    max-width: 680px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary-action,
+  .secondary-action {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+
+  .primary-action {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary-action {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .primary-action:hover,
+  .secondary-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .quick-panel {
+    border: 1px solid rgba(217, 231, 233, 0.96);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 26px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .quick-panel h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    line-height: 1.12;
+  }
+
+  .quick-panel ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .quick-panel li {
+    border-radius: 999px;
+    background: #eef7f7;
+    color: #0f6f78;
+    padding: 8px 11px;
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .service-body {
+    background: #ffffff;
+  }
+
+  .side-note {
+    position: sticky;
+    top: 104px;
+    border-top: 1px solid rgba(15, 111, 120, 0.2);
+    padding-top: 18px;
+  }
+
+  .side-note p:last-child {
+    margin: 14px 0 0;
+    color: #536b70;
+    font-weight: 700;
+  }
+
+  .article-flow {
+    display: grid;
+    gap: 52px;
+  }
+
+  .article-flow section {
+    border-top: 1px solid rgba(15, 111, 120, 0.14);
+    padding-top: 24px;
+  }
+
+  .article-flow h2 {
+    margin: 0;
+  }
+
+  .article-flow p {
+    max-width: 760px;
+    margin: 18px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .disclaimer {
+    border-radius: 8px;
+    border-top: 0 !important;
+    background: #f7f4ef;
+    padding: 28px !important;
+  }
+
+  .disclaimer h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  .related-section {
+    background: #f7f4ef;
+  }
+
+  .section-head {
+    max-width: 760px;
+    margin-bottom: 34px;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .related-card {
+    border: 1px solid rgba(217, 231, 233, 0.95);
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 24px;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .related-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 111, 120, 0.28);
+    box-shadow: 0 18px 50px rgba(29, 43, 46, 0.1);
+  }
+
+  .related-card span {
+    color: #0f6f78;
+    font-size: 0.76rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .related-card h3 {
+    margin: 18px 0 10px;
+    color: #1d2b2e;
+    font-size: 1.45rem;
+    line-height: 1.08;
+  }
+
+  .related-card p {
+    margin: 0;
+    color: #536b70;
+  }
+
+  .final-cta {
+    padding: 96px 0;
+    background: #1d2b2e;
+    color: white;
+  }
+
+  .final-inner {
+    max-width: 880px;
+  }
+
+  .final-cta h2 {
+    color: white;
+    font-size: clamp(2.1rem, 5vw, 4.2rem);
+  }
+
+  .final-cta .eyebrow {
+    color: #9edfe3;
+  }
+
+  .final-cta .secondary-action {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: transparent;
+    color: white;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 940px) {
+    .hero-grid,
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .quick-panel {
+      max-width: 560px;
+    }
+
+    .side-note {
+      position: static;
+    }
+
+    .related-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .service-hero {
+      padding: 64px 0;
+    }
+
+    .hero-actions a {
+      width: 100%;
+    }
+
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .final-cta {
+      padding: 72px 0;
+    }
+  }
+</style>

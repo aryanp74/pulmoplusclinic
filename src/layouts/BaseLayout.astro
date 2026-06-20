@@ -1,0 +1,65 @@
+---
+import "@styles/global.css";
+import Seo from "@components/Seo.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import MobileActionBar from "@components/MobileActionBar.astro";
+import ComfortToggle from "@components/ComfortToggle.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const { title, description, image, noindex, structuredData } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo
+      title={title}
+      description={description}
+      image={image}
+      noindex={noindex}
+      structuredData={structuredData}
+    />
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+
+        const savedComfort = localStorage.getItem("pulmoplus-comfort-mode");
+        root.dataset.comfort = savedComfort === "true" ? "true" : "false";
+
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const saveData = Boolean(connection && connection.saveData);
+        const slowConnection = Boolean(
+          connection &&
+            ["slow-2g", "2g", "3g"].includes(connection.effectiveType)
+        );
+        const lowMemory = Boolean(navigator.deviceMemory && navigator.deviceMemory <= 2);
+
+        root.dataset.dataMode = saveData || slowConnection || lowMemory ? "low" : "standard";
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+    <MobileActionBar />
+    <ComfortToggle />
+  </body>
+</html>

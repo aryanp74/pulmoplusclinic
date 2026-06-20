@@ -1,0 +1,469 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { doctor, clinic, actions } from "@data/site";
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: `About ${doctor.name}`,
+  description:
+    "Learn about Dr. Priyadarshi J. Kumar, respiratory, sleep, critical care and interventional pulmonology specialist at PulmoPlus."
+};
+---
+
+<BaseLayout
+  title={`About ${doctor.name} | PulmoPlus Noida`}
+  description="Dr. Priyadarshi J. Kumar has over 20 years of experience in respiratory medicine, sleep medicine, critical care, interventional pulmonology and general practice."
+  structuredData={aboutSchema}
+>
+  <section class="about-hero">
+    <div class="container about-hero-grid">
+      <div>
+        <p class="eyebrow">About the doctor</p>
+        <h1>
+          <span>Dr.</span>
+          <span>Priyadarshi J.</span>
+          <span>Kumar</span>
+        </h1>
+        <p class="lead">
+            {doctor.longBio}
+            </p>
+
+        <div class="hero-actions">
+          <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+          <a class="secondary-action focus-ring" href={actions.call}>Call {clinic.phone}</a>
+        </div>
+      </div>
+
+      <figure class="doctor-portrait">
+        <img
+          src={doctor.portrait}
+          alt={`Portrait of ${doctor.name}`}
+          loading="lazy"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section stats-section" aria-labelledby="experience-title">
+    <div class="container">
+      <p class="eyebrow">Clinical experience</p>
+      <h2 id="experience-title">Built through years of complex respiratory, ICU and procedural care.</h2>
+
+      <dl class="stats-grid">
+        {doctor.stats.map((stat) => (
+          <div>
+            <dt>{stat.value}</dt>
+            <dd>{stat.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section philosophy-section" aria-labelledby="philosophy-title">
+    <div class="container philosophy-grid">
+      <div>
+        <p class="eyebrow">Philosophy of care</p>
+        <h2 id="philosophy-title">Care that listens before it treats.</h2>
+      </div>
+
+      <div>
+        <blockquote>
+          “{doctor.philosophy}”
+        </blockquote>
+
+        <p>
+          PulmoPlus is designed for patients and families who need clarity:
+          people dealing with breathlessness, sleep problems, recurrent infections,
+          complex reports, chronic conditions or second opinions after unclear answers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section credentials-section" aria-labelledby="credentials-title">
+    <div class="container credentials-grid">
+      <div>
+        <p class="eyebrow">Education</p>
+        <h2 id="credentials-title">Training and academic foundation.</h2>
+      </div>
+
+      <div class="list-panel">
+        {doctor.education.map((item) => (
+          <p>{item}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section timeline-section" aria-labelledby="timeline-title">
+    <div class="container timeline-grid">
+      <div>
+        <p class="eyebrow">Experience</p>
+        <h2 id="timeline-title">Hospital, ICU and academic work.</h2>
+      </div>
+
+      <ol class="timeline">
+        {doctor.experience.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section credentials-section" aria-labelledby="achievements-title">
+    <div class="container credentials-grid">
+      <div>
+        <p class="eyebrow">Credentials</p>
+        <h2 id="achievements-title">Specialist depth without losing the human side.</h2>
+      </div>
+
+      <div class="list-panel">
+        {doctor.credentials.map((item) => (
+          <p>{item}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section advanced-care-section" aria-labelledby="advanced-care-title">
+    <div class="container credentials-grid">
+      <div>
+        <p class="eyebrow">Advanced pulmonary care</p>
+        <h2 id="advanced-care-title">Procedural experience supported by careful clinical judgment.</h2>
+        <p class="advanced-care-copy">
+          PulmoPlus supports patients who need bronchoscopy-related guidance,
+          deeper airway evaluation and specialist review before or after advanced
+          pulmonary procedures.
+        </p>
+        <small class="advanced-care-note">
+          Procedure image shown for clinical context. Individual care depends on direct consultation.
+        </small>
+      </div>
+
+      <figure class="procedure-figure">
+        <img
+          src={doctor.procedureImage}
+          alt="Pulmonary procedure setting for bronchoscopy-related clinical context"
+          loading="lazy"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="final-cta" aria-labelledby="final-title">
+    <div class="container final-inner">
+      <p class="eyebrow">Consultation</p>
+      <h2 id="final-title">If symptoms have not been clearly answered, start with a careful review.</h2>
+      <div class="hero-actions">
+        <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary-action focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.54), transparent 30%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .about-hero-grid,
+  .philosophy-grid,
+  .credentials-grid,
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);
+    gap: clamp(44px, 7vw, 110px);
+    align-items: center;
+  }
+
+  .about-hero-grid {
+    align-items: start;
+  }
+
+  h1 {
+    margin: 14px 0 0;
+    max-width: 11ch;
+    color: #1d2b2e;
+    font-size: clamp(2.4rem, 5.2vw, 5rem);
+    line-height: 0.96;
+    letter-spacing: 0;
+  }
+
+  h1 span {
+    display: block;
+    white-space: nowrap;
+  }
+
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    font-size: clamp(2.1rem, 5vw, 4.2rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .lead {
+    max-width: 580px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary-action,
+  .secondary-action {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+
+  .primary-action {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary-action {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .primary-action:hover,
+  .secondary-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .doctor-portrait {
+    min-height: 560px;
+    margin: 0;
+    max-width: 520px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+    justify-self: end;
+  }
+
+  .doctor-portrait img,
+  .procedure-figure img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+  }
+
+  .advanced-care-section {
+    background: #ffffff;
+  }
+
+  .advanced-care-copy {
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.06rem;
+  }
+
+  .advanced-care-note {
+    display: block;
+    margin-top: 18px;
+    color: #789097;
+    line-height: 1.6;
+  }
+
+  .procedure-figure {
+    min-height: 420px;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .stats-section,
+  .credentials-section {
+    background: #ffffff;
+  }
+
+  .stats-section h2 {
+    max-width: 900px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin: 44px 0 0;
+  }
+
+  .stats-grid div {
+    border-top: 1px solid rgba(15, 111, 120, 0.18);
+    padding-top: 16px;
+  }
+
+  .stats-grid dt {
+    color: #0f6f78;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .stats-grid dd {
+    margin: 10px 0 0;
+    color: #536b70;
+    font-weight: 700;
+  }
+
+  .philosophy-section {
+    background: #f7f4ef;
+  }
+
+  blockquote {
+    margin: 0;
+    border-left: 3px solid #0f6f78;
+    padding-left: 20px;
+    color: #1d2b2e;
+    font-size: clamp(1.35rem, 2.4vw, 2.1rem);
+    line-height: 1.18;
+    font-weight: 800;
+  }
+
+  .philosophy-grid p {
+    margin: 28px 0 0;
+    color: #536b70;
+    font-size: 1.06rem;
+  }
+
+  .list-panel {
+    display: grid;
+    gap: 0;
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 10px 28px;
+  }
+
+  .list-panel p {
+    margin: 0;
+    border-bottom: 1px solid rgba(15, 111, 120, 0.14);
+    padding: 18px 0;
+    color: #536b70;
+    font-weight: 750;
+  }
+
+  .list-panel p:last-child {
+    border-bottom: 0;
+  }
+
+  .timeline-section {
+    background: #eef7f7;
+  }
+
+  .timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: timeline;
+  }
+
+  .timeline li {
+    position: relative;
+    border-top: 1px solid rgba(15, 111, 120, 0.18);
+    padding: 22px 0 22px 64px;
+    color: #1d2b2e;
+    font-size: 1.05rem;
+    font-weight: 750;
+    counter-increment: timeline;
+  }
+
+  .timeline li::before {
+    content: counter(timeline, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    color: #0f6f78;
+    font-weight: 900;
+  }
+
+  .final-cta {
+    padding: 96px 0;
+    background: #1d2b2e;
+    color: white;
+  }
+
+  .final-inner {
+    max-width: 880px;
+  }
+
+  .final-cta h2 {
+    color: white;
+  }
+
+  .final-cta .eyebrow {
+    color: #9edfe3;
+  }
+
+  .final-cta .secondary-action {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: transparent;
+    color: white;
+  }
+
+  @media (max-width: 900px) {
+    .about-hero-grid,
+    .philosophy-grid,
+    .credentials-grid,
+    .timeline-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .doctor-portrait {
+      min-height: 430px;
+      max-width: none;
+      justify-self: stretch;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .about-hero {
+      padding: 64px 0;
+    }
+
+    .hero-actions a {
+      width: 100%;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .doctor-portrait {
+      min-height: 360px;
+      padding: 24px;
+    }
+
+    .list-panel {
+      padding: 6px 18px;
+    }
+  }
+</style>

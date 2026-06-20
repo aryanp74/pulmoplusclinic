@@ -1,0 +1,9 @@
+node_modules
+.dist
+.astro
+.vscode
+astro.config.mjs.timestamp-*
+.env
+.env.*
+!.env.example
+dist

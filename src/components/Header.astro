@@ -1,0 +1,265 @@
+---
+import { clinic, navigation, actions } from "@data/site";
+---
+
+<header class="site-header" data-header>
+  <div class="header-inner">
+    <a class="brand focus-ring" href="/" aria-label="PulmoPlus home">
+      <span class="brand-mark" aria-hidden="true">
+        <span></span>
+      </span>
+      <span class="brand-copy">
+        <strong>{clinic.name}</strong>
+        <small>Respiratory and sleep care</small>
+      </span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      {navigation.map((item) => (
+        <a class="focus-ring" href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="desktop-actions">
+      <a class="phone focus-ring" href={actions.call}>Call {clinic.phone}</a>
+      <a class="book focus-ring" href={actions.book}>Book appointment</a>
+    </div>
+
+    <button
+      class="menu-button focus-ring"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-button
+    >
+      Menu
+    </button>
+  </div>
+
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" data-mobile-menu hidden>
+    {navigation.map((item) => (
+      <a class="focus-ring" href={item.href}>{item.label}</a>
+    ))}
+    <a class="mobile-book focus-ring" href={actions.book}>Book appointment</a>
+    <a class="mobile-call focus-ring" href={actions.call}>Call PulmoPlus</a>
+  </nav>
+</header>
+
+<script>
+  const button = document.querySelector("[data-menu-button]");
+  const menu = document.querySelector("[data-mobile-menu]");
+
+  button?.addEventListener("click", () => {
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!isOpen));
+
+    if (menu instanceof HTMLElement) {
+      menu.hidden = isOpen;
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    border-bottom: 1px solid rgba(217, 231, 233, 0.76);
+    background: rgba(247, 244, 239, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .header-inner {
+    width: min(1180px, calc(100% - 32px));
+    min-height: 76px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: max-content;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(15, 111, 120, 0.22);
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(158, 223, 227, 0.85), transparent 46%),
+      #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 111, 120, 0.12);
+  }
+
+  .brand-mark span {
+    width: 16px;
+    height: 22px;
+    border: 2px solid #0f6f78;
+    border-top-left-radius: 999px;
+    border-top-right-radius: 999px;
+    border-bottom-left-radius: 999px;
+    transform: rotate(-18deg);
+    position: relative;
+  }
+
+  .brand-mark span::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 22px;
+    border: 2px solid #0f6f78;
+    border-top-left-radius: 999px;
+    border-top-right-radius: 999px;
+    border-bottom-right-radius: 999px;
+    left: 10px;
+    top: -2px;
+    transform: rotate(36deg);
+  }
+
+  .brand-copy {
+    display: grid;
+    line-height: 1.05;
+  }
+
+  .brand-copy strong {
+    color: #1d2b2e;
+    font-size: 1.02rem;
+    letter-spacing: 0;
+  }
+
+  .brand-copy small {
+    margin-top: 4px;
+    color: #536b70;
+    font-size: 0.76rem;
+    font-weight: 650;
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    color: #536b70;
+    font-size: 0.91rem;
+    font-weight: 650;
+  }
+
+  .desktop-nav a {
+    transition: color 180ms ease;
+  }
+
+  .desktop-nav a:hover {
+    color: #0f6f78;
+  }
+
+  .desktop-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .phone {
+    color: #0f6f78;
+    font-size: 0.9rem;
+    font-weight: 750;
+  }
+
+  .book,
+  .mobile-book {
+    border-radius: 999px;
+    background: #0f6f78;
+    color: white;
+    padding: 12px 18px;
+    font-size: 0.91rem;
+    font-weight: 800;
+    box-shadow: 0 14px 32px rgba(15, 111, 120, 0.2);
+    transition:
+      transform 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .book:hover,
+  .mobile-book:hover {
+    transform: translateY(-1px);
+    background: #0b5e66;
+    box-shadow: 0 18px 38px rgba(15, 111, 120, 0.24);
+  }
+
+  .menu-button {
+    display: none;
+    border: 1px solid rgba(15, 111, 120, 0.18);
+    border-radius: 999px;
+    background: white;
+    color: #1d2b2e;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    font-weight: 800;
+  }
+
+  .mobile-menu {
+    width: min(100% - 24px, 480px);
+    margin: 0 auto 14px;
+    border: 1px solid rgba(217, 231, 233, 0.92);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 10px;
+    box-shadow: 0 24px 60px rgba(29, 43, 46, 0.12);
+  }
+
+  .mobile-menu a {
+    display: flex;
+    min-height: 46px;
+    align-items: center;
+    border-radius: 8px;
+    padding: 0 12px;
+    color: #1d2b2e;
+    font-weight: 750;
+  }
+
+  .mobile-menu a:hover {
+    background: #eef7f7;
+  }
+
+  .mobile-book {
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .mobile-call {
+    justify-content: center;
+    color: #0f6f78 !important;
+  }
+
+  @media (max-width: 940px) {
+    .desktop-nav,
+    .desktop-actions {
+      display: none;
+    }
+
+    .menu-button {
+      display: inline-flex;
+    }
+
+    .header-inner {
+      min-height: 68px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .brand-copy small {
+      display: none;
+    }
+
+    .header-inner {
+      width: min(100% - 24px, 1180px);
+    }
+  }
+</style>

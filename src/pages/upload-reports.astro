@@ -1,0 +1,625 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { clinic, actions } from "@data/site";
+
+const reportsEndpoint = "/api/report-uploads";
+const reportWhatsappUrl = `https://wa.me/91${clinic.whatsapp}?text=${encodeURIComponent(
+  "Hello PulmoPlus, I would like to share reports before consultation."
+)}`;
+---
+
+<BaseLayout
+  title="Upload Reports | PulmoPlus Noida"
+  description="Share reports with PulmoPlus before consultation with clear consent and privacy guidance."
+  noindex={true}
+>
+  <section class="reports-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Upload reports</p>
+        <h1>Share reports only for appointment review.</h1>
+        <p>
+          This page is designed for prescriptions, scans, sleep studies and test reports
+          that may help the doctor prepare for your consultation.
+        </p>
+      </div>
+
+      <aside class="warning-panel">
+        <h2>Not for emergencies</h2>
+        <p>
+          Report upload is not an emergency service and does not replace direct medical
+          consultation.
+        </p>
+        <a class="panel-link focus-ring" href={actions.call}>Call {clinic.phone}</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section reports-section">
+    <div class="container reports-grid">
+      <aside class="privacy-note">
+        <p class="eyebrow">Privacy note</p>
+        <h2>Only send what is needed for your consultation.</h2>
+        <p>
+          Do not upload unrelated identity documents or unnecessary personal records.
+          Files should be shared only after you understand how they will be used.
+        </p>
+      </aside>
+
+      <div class="form-shell">
+        <form
+          id="reports-form"
+          class="reports-form"
+          action={reportsEndpoint}
+          method="POST"
+          enctype="multipart/form-data"
+          novalidate
+        >
+          <input type="hidden" name="form_name" value="PulmoPlus report upload request" />
+          <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp-field" aria-hidden="true" />
+
+          <fieldset>
+            <legend>1. Patient details</legend>
+
+            <div class="field-grid">
+              <label>
+                <span>Full name</span>
+                <input name="patient_name" type="text" autocomplete="name" minlength="2" maxlength="80" required />
+              </label>
+
+              <label>
+                <span>Phone number</span>
+                <input name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9 +()-]{10,20}" minlength="10" maxlength="20" required />
+              </label>
+
+              <label>
+                <span>Email optional</span>
+                <input name="email" type="email" autocomplete="email" />
+              </label>
+
+              <label>
+                <span>Appointment date if known</span>
+                <input name="appointment_date" type="date" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Report details</legend>
+
+            <label>
+              <span>What are you sharing?</span>
+              <select name="report_type" required>
+                <option value="">Select report type</option>
+                <option>Prescription</option>
+                <option>Blood test report</option>
+                <option>X-ray or CT report</option>
+                <option>Sleep study report</option>
+                <option>Pulmonary function test</option>
+                <option>Multiple reports</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Short note optional</span>
+              <textarea
+                name="message"
+                rows="5"
+                maxlength="1000"
+                placeholder="Mention why you are sharing these reports or what appointment they relate to."
+              ></textarea>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Attach files</legend>
+
+            <label class="file-field">
+              <span>Upload PDF, JPG or PNG files</span>
+              <input
+                name="reports"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                multiple
+                required
+              />
+              <small>Suggested maximum: 10 MB per file. Avoid uploading unnecessary documents.</small>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>4. Consent</legend>
+
+            <label class="consent">
+              <input name="report_consent" type="checkbox" required />
+              <span>
+                I consent to PulmoPlus receiving and reviewing the uploaded reports
+                for appointment-related purposes. I understand this is not an
+                emergency service and does not replace direct medical consultation.
+              </span>
+            </label>
+          </fieldset>
+
+          <div class="form-error" data-form-error hidden>
+            Please complete the required fields, attach a file and accept the consent checkbox.
+          </div>
+
+          <button class="submit-button focus-ring" type="submit">
+            Submit report upload request
+          </button>
+
+          <p class="form-footnote">
+            If file upload is not configured yet, use WhatsApp after submitting this request.
+          </p>
+
+          <p class="form-footnote">
+            If a secure upload endpoint is configured, this form submits there first and still keeps WhatsApp as fallback.
+          </p>
+        </form>
+
+        <div class="confirmation" data-confirmation hidden>
+          <div class="breathing-circle" aria-hidden="true"></div>
+          <p class="eyebrow">Request prepared</p>
+          <h2>Your report sharing request has been prepared.</h2>
+          <p>
+            If online upload is not active yet, send your reports directly to PulmoPlus
+            on WhatsApp after confirming with the clinic.
+          </p>
+
+          <div class="confirmation-actions">
+            <a class="primary-action focus-ring" data-whatsapp-confirm data-whatsapp-number={clinic.whatsapp} href={reportWhatsappUrl} target="_blank" rel="noreferrer">
+              Continue on WhatsApp
+            </a>
+            <a class="secondary-action focus-ring" href={`mailto:${clinic.email}`}>Email clinic</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector("#reports-form");
+  const errorBox = document.querySelector("[data-form-error]");
+  const confirmation = document.querySelector("[data-confirmation]");
+  const whatsappConfirm = document.querySelector("[data-whatsapp-confirm]");
+  const submitButton = form?.querySelector('button[type="submit"]');
+  const confirmationText = confirmation?.querySelector("p:not(.eyebrow)");
+
+  function getValue(formData: FormData, key: string) {
+    return String(formData.get(key) || "").trim();
+  }
+
+  function normalizePhone(value: string) {
+    return value.replace(/[^\d+]/g, "");
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!(form instanceof HTMLFormElement)) return;
+    if (submitButton instanceof HTMLButtonElement) submitButton.disabled = true;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      if (errorBox instanceof HTMLElement) errorBox.hidden = false;
+      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+      return;
+    }
+
+    if (errorBox instanceof HTMLElement) errorBox.hidden = true;
+
+    const formData = new FormData(form);
+    const honeypot = getValue(formData, "company");
+
+    if (honeypot) {
+      form.reset();
+      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+      return;
+    }
+
+    const patientName = getValue(formData, "patient_name");
+    const phone = normalizePhone(getValue(formData, "phone"));
+    const reportType = getValue(formData, "report_type");
+    const appointmentDate = getValue(formData, "appointment_date");
+    const message = getValue(formData, "message");
+    const files = formData.getAll("reports").filter((value) => value instanceof File);
+    const allowedTypes = new Set(["application/pdf", "image/jpeg", "image/png"]);
+    const maxFileSize = 10 * 1024 * 1024;
+
+    if (!files.length) {
+      if (errorBox instanceof HTMLElement) {
+        errorBox.textContent = "Please attach at least one report file.";
+        errorBox.hidden = false;
+      }
+      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+      return;
+    }
+
+    if (files.length > 5) {
+      if (errorBox instanceof HTMLElement) {
+        errorBox.textContent = "Please upload up to 5 files per request.";
+        errorBox.hidden = false;
+      }
+      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+      return;
+    }
+
+    for (const file of files) {
+      if (!(file instanceof File)) continue;
+
+      if (!allowedTypes.has(file.type) || file.size > maxFileSize) {
+        if (errorBox instanceof HTMLElement) {
+          errorBox.textContent = "Use PDF, JPG or PNG files up to 10 MB each.";
+          errorBox.hidden = false;
+        }
+        if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+        return;
+      }
+    }
+
+    const whatsappMessage = [
+      "Hello PulmoPlus, I would like to share reports before consultation.",
+      `Name: ${patientName}`,
+      `Phone: ${phone}`,
+      `Report type: ${reportType}`,
+      appointmentDate ? `Appointment date: ${appointmentDate}` : "",
+      message ? `Note: ${message}` : ""
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    if (whatsappConfirm instanceof HTMLAnchorElement) {
+      const whatsappNumber = whatsappConfirm.dataset.whatsappNumber || "8826300531";
+      whatsappConfirm.href = `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    }
+
+    const action = form.getAttribute("action") || "";
+
+    try {
+      const response = await fetch(action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Upload failed");
+      }
+
+      if (confirmationText instanceof HTMLElement && result?.message) {
+        confirmationText.textContent = result.message;
+      }
+
+      form.hidden = true;
+
+      if (confirmation instanceof HTMLElement) {
+        confirmation.hidden = false;
+        confirmation.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } catch (error) {
+      if (errorBox instanceof HTMLElement) {
+        errorBox.textContent =
+          error instanceof Error
+            ? error.message
+            : "Report upload failed. Please confirm with the clinic and use WhatsApp as fallback.";
+        errorBox.hidden = false;
+      }
+    } finally {
+      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .reports-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .hero-grid,
+  .reports-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: start;
+  }
+
+  .reports-grid {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 840px;
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 3.6vw, 3.2rem);
+  }
+
+  .reports-hero p,
+  .privacy-note p {
+    max-width: 660px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .warning-panel {
+    border: 1px solid rgba(231, 154, 139, 0.35);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 26px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .warning-panel h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    line-height: 1.1;
+  }
+
+  .warning-panel p {
+    margin: 14px 0 20px;
+    font-size: 0.98rem;
+  }
+
+  .panel-link {
+    display: flex;
+    min-height: 46px;
+    align-items: center;
+    border-top: 1px solid rgba(15, 111, 120, 0.14);
+    color: #0f6f78;
+    font-weight: 850;
+  }
+
+  .reports-section {
+    background: #ffffff;
+  }
+
+  .privacy-note {
+    position: sticky;
+    top: 104px;
+    border-top: 1px solid rgba(15, 111, 120, 0.2);
+    padding-top: 18px;
+  }
+
+  .privacy-note h2 {
+    font-size: clamp(1.7rem, 3vw, 2.45rem);
+  }
+
+  .form-shell {
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: clamp(18px, 3vw, 34px);
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .reports-form {
+    display: grid;
+    gap: 28px;
+  }
+
+  fieldset {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid rgba(15, 111, 120, 0.16);
+    padding: 24px 0 0;
+  }
+
+  fieldset:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  legend {
+    margin-bottom: 2px;
+    color: #1d2b2e;
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  label {
+    display: grid;
+    gap: 8px;
+    color: #1d2b2e;
+    font-weight: 800;
+  }
+
+  label span {
+    font-size: 0.92rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    border-radius: 8px;
+    background: white;
+    color: #1d2b2e;
+    padding: 13px 14px;
+    outline: 2px solid transparent;
+    outline-offset: 3px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #0f6f78;
+    outline-color: rgba(15, 111, 120, 0.24);
+  }
+
+  .file-field small {
+    color: #789097;
+    font-size: 0.86rem;
+    font-weight: 650;
+  }
+
+  .consent {
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    align-items: start;
+    color: #536b70;
+    font-weight: 650;
+  }
+
+  .consent input {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+  }
+
+  .form-error {
+    border-radius: 8px;
+    background: rgba(231, 154, 139, 0.16);
+    color: #7a3028;
+    padding: 12px 14px;
+    font-weight: 800;
+  }
+
+  .submit-button,
+  .primary-action,
+  .secondary-action {
+    display: inline-flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 22px;
+    font-weight: 900;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+
+  .submit-button,
+  .primary-action {
+    border: 0;
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+    cursor: pointer;
+  }
+
+  .secondary-action {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .submit-button:hover,
+  .primary-action:hover,
+  .secondary-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .form-footnote {
+    margin: -14px 0 0;
+    color: #789097;
+    font-size: 0.88rem;
+    font-weight: 650;
+  }
+
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .confirmation {
+    text-align: center;
+    padding: clamp(28px, 5vw, 58px) 18px;
+  }
+
+  .breathing-circle {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 26px;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95), transparent 34%),
+      rgba(158, 223, 227, 0.9);
+    box-shadow: 0 0 0 12px rgba(158, 223, 227, 0.22);
+    animation: breathe 8s ease-in-out infinite;
+  }
+
+  .confirmation h2 {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  .confirmation p:not(.eyebrow) {
+    max-width: 620px;
+    margin: 18px auto 0;
+    color: #536b70;
+    font-size: 1.05rem;
+  }
+
+  .confirmation-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  @media (max-width: 940px) {
+    .hero-grid,
+    .reports-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .warning-panel {
+      max-width: 560px;
+    }
+
+    .privacy-note {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .reports-hero {
+      padding: 64px 0;
+    }
+
+    .field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .submit-button,
+    .confirmation-actions a {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,141 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { clinic } from "@data/site";
+---
+
+<BaseLayout
+  title="Privacy Policy | PulmoPlus"
+  description="PulmoPlus privacy policy explaining how appointment and report-related information is collected and used."
+>
+  <section class="legal-hero">
+    <div class="container">
+      <p class="eyebrow">Privacy Policy</p>
+      <h1>Patient information should be handled carefully.</h1>
+      <p>
+        This policy explains how PulmoPlus may collect and use information submitted
+        through this website.
+      </p>
+    </div>
+  </section>
+
+  <section class="section legal-section">
+    <div class="container legal-flow">
+      <section>
+        <h2>Information collected</h2>
+        <p>
+          PulmoPlus may collect your name, phone number, WhatsApp number, email,
+          preferred language, appointment preference, reason for visit and any reports
+          you choose to share.
+        </p>
+      </section>
+
+      <section>
+        <h2>How information is used</h2>
+        <p>
+          Information is used to contact you about appointment requests, consultation
+          coordination, report review related to appointments and clinic communication.
+        </p>
+      </section>
+
+      <section>
+        <h2>Report uploads</h2>
+        <p>
+          Uploaded reports should be used only for appointment-related review. Do not
+          submit unnecessary documents. Report sharing is not an emergency service.
+        </p>
+      </section>
+
+      <section>
+        <h2>Consent</h2>
+        <p>
+          By submitting a form, you consent to PulmoPlus using the information you
+          provide for the purpose shown on that form.
+        </p>
+      </section>
+
+      <section>
+        <h2>Correction or deletion</h2>
+        <p>
+          To request correction or deletion of submitted information, contact PulmoPlus
+          at {clinic.email} or call {clinic.phone}.
+        </p>
+      </section>
+
+      <section>
+        <h2>Third-party services</h2>
+        <p>
+          The website may use form, hosting, analytics, maps, email or communication
+          providers. These services should be configured to collect only necessary data.
+        </p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>
+          For privacy questions, contact PulmoPlus at {clinic.email} or {clinic.phone}.
+        </p>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .legal-hero .container,
+  .legal-flow {
+    max-width: 860px;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.7rem, 3.2vw, 2.8rem);
+  }
+
+  .legal-hero p,
+  .legal-flow p {
+    margin: 22px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .legal-section {
+    background: white;
+  }
+
+  .legal-flow {
+    display: grid;
+    gap: 42px;
+  }
+
+  .legal-flow section {
+    border-top: 1px solid rgba(15, 111, 120, 0.14);
+    padding-top: 24px;
+  }
+
+  .legal-flow h2 {
+    margin: 0;
+  }
+
+  @media (max-width: 620px) {
+    .legal-hero {
+      padding: 64px 0;
+    }
+  }
+</style>

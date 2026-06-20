@@ -1,0 +1,68 @@
+---
+import { actions } from "@data/site";
+---
+
+<nav class="mobile-action-bar" aria-label="Quick patient actions">
+  <a class="focus-ring" href={actions.call}>
+    <span>Call</span>
+  </a>
+  <a class="focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+    <span>WhatsApp</span>
+  </a>
+  <a class="focus-ring" href={actions.book}>
+    <span>Book</span>
+  </a>
+  <a class="focus-ring" href={actions.directions} target="_blank" rel="noreferrer">
+    <span>Directions</span>
+  </a>
+</nav>
+
+<style>
+  .mobile-action-bar {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    z-index: 70;
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    border: 1px solid rgba(217, 231, 233, 0.9);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 7px;
+    box-shadow: 0 18px 54px rgba(29, 43, 46, 0.18);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-action-bar a {
+    display: grid;
+    min-height: 46px;
+    place-items: center;
+    border-radius: 8px;
+    color: #1d2b2e;
+    font-size: 0.78rem;
+    font-weight: 850;
+  }
+
+  .mobile-action-bar a:nth-child(2) {
+    background: #eef7f7;
+    color: #0f6f78;
+  }
+
+  .mobile-action-bar a:nth-child(3) {
+    background: #0f6f78;
+    color: white;
+  }
+
+  @media (max-width: 760px) {
+    .mobile-action-bar {
+      display: grid;
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    }
+
+    :global(body) {
+      padding-bottom: 98px;
+    }
+  }
+</style>

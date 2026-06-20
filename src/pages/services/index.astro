@@ -1,0 +1,395 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { services, serviceCategories } from "@data/services";
+import { actions } from "@data/site";
+
+const groupedServices = serviceCategories
+  .map((category) => ({
+    category,
+    id: category.toLowerCase().replaceAll(" ", "-"),
+    items: services.filter((service) => service.category === category)
+  }))
+  .filter((group) => group.items.length > 0);
+
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "PulmoPlus Services",
+  description:
+    "Respiratory medicine, sleep medicine, interventional pulmonology, pulmonary diagnostics and general medical care services at PulmoPlus in Noida."
+};
+---
+
+<BaseLayout
+  title="Services | PulmoPlus Respiratory and Sleep Care in Noida"
+  description="Explore PulmoPlus services including respiratory medicine, sleep medicine, bronchoscopy, EBUS-TBNA, thoracoscopy, pulmonary function testing and general medical care."
+  structuredData={servicesSchema}
+>
+  <section class="services-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Services</p>
+        <h1>Find care by symptom, concern or procedure.</h1>
+        <p>
+          PulmoPlus organizes care in patient-friendly language, while still giving
+          enough depth for serious respiratory, sleep and procedural concerns.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+          <a class="secondary-action focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+            Ask on WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="category-panel" aria-label="Service categories">
+        {groupedServices.map((group) => (
+          <a class="focus-ring" href={`#${group.id}`}>
+            {group.category}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section services-list" aria-labelledby="all-services-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Care areas</p>
+        <h2 id="all-services-title">PulmoPlus services</h2>
+        <p>
+          Choose the closest concern. Each page explains when to consult, what to expect
+          and how PulmoPlus can help guide the next step.
+        </p>
+      </div>
+
+      {groupedServices.map((group) => (
+        <section class="service-group" id={group.id} aria-labelledby={`${group.id}-title`}>
+          <div class="group-head">
+            <p class="eyebrow">Category</p>
+            <h3 id={`${group.id}-title`}>{group.category}</h3>
+          </div>
+
+          <div class="service-grid">
+            {group.items.map((service) => (
+              <a class="service-card focus-ring" href={`/services/${service.slug}/`}>
+                <span>{service.category}</span>
+                <h4>{service.title}</h4>
+                <p>{service.summary}</p>
+
+                <ul aria-label={`Common reasons for ${service.title}`}>
+                  {service.symptoms.map((symptom) => (
+                    <li>{symptom}</li>
+                  ))}
+                </ul>
+
+                <strong>Learn more</strong>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
+
+  <section class="section emergency-note" aria-labelledby="urgent-title">
+    <div class="container urgent-box">
+      <div>
+        <p class="eyebrow">Urgent symptoms</p>
+        <h2 id="urgent-title">Know when not to wait.</h2>
+      </div>
+
+      <p>
+        If you are experiencing severe breathlessness, chest pain, bluish lips,
+        confusion, fainting or a medical emergency, seek urgent emergency care
+        immediately or call local emergency services.
+      </p>
+    </div>
+  </section>
+
+  <section class="final-cta" aria-labelledby="final-title">
+    <div class="container final-inner">
+      <p class="eyebrow">Not sure where to start?</p>
+      <h2 id="final-title">Tell PulmoPlus what you are facing. The clinic can guide the next step.</h2>
+      <div class="hero-actions">
+        <a class="primary-action focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary-action focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .services-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 80% 26%, rgba(158, 223, 227, 0.58), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: end;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 860px;
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2.1rem, 5vw, 4.2rem);
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+  }
+
+  h4 {
+    font-size: 1.45rem;
+    line-height: 1.08;
+  }
+
+  .services-hero p,
+  .section-head p,
+  .urgent-box p {
+    max-width: 650px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary-action,
+  .secondary-action {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+
+  .primary-action {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary-action {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .primary-action:hover,
+  .secondary-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .category-panel {
+    display: grid;
+    gap: 8px;
+    border: 1px solid rgba(217, 231, 233, 0.96);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.82);
+    padding: 12px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .category-panel a {
+    min-height: 46px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    color: #1d2b2e;
+    font-weight: 800;
+  }
+
+  .category-panel a:hover {
+    background: #eef7f7;
+    color: #0f6f78;
+  }
+
+  .services-list {
+    background: #ffffff;
+  }
+
+  .section-head {
+    max-width: 760px;
+    margin-bottom: 38px;
+  }
+
+  .service-group + .service-group {
+    margin-top: 40px;
+  }
+
+  .group-head {
+    margin-bottom: 20px;
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .service-card {
+    min-height: 340px;
+    border: 1px solid rgba(217, 231, 233, 0.95);
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 24px;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 111, 120, 0.28);
+    box-shadow: 0 18px 50px rgba(29, 43, 46, 0.1);
+  }
+
+  .service-card span {
+    color: #0f6f78;
+    font-size: 0.76rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .service-card h4 {
+    margin: 18px 0 10px;
+    color: #1d2b2e;
+  }
+
+  .service-card p {
+    margin: 0;
+    color: #536b70;
+  }
+
+  .service-card ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 22px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service-card li {
+    border-radius: 999px;
+    background: white;
+    color: #536b70;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    font-weight: 750;
+  }
+
+  .service-card strong {
+    color: #0f6f78;
+  }
+
+  .emergency-note {
+    background: #f7f4ef;
+  }
+
+  .urgent-box {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 34px;
+    align-items: center;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: clamp(26px, 5vw, 52px);
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .urgent-box p {
+    margin: 0;
+  }
+
+  .final-cta {
+    padding: 96px 0;
+    background: #1d2b2e;
+    color: white;
+  }
+
+  .final-inner {
+    max-width: 880px;
+  }
+
+  .final-cta h2 {
+    color: white;
+  }
+
+  .final-cta .eyebrow {
+    color: #9edfe3;
+  }
+
+  .final-cta .secondary-action {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: transparent;
+    color: white;
+  }
+
+  @media (max-width: 940px) {
+    .hero-grid,
+    .urgent-box {
+      grid-template-columns: 1fr;
+    }
+
+    .category-panel {
+      max-width: 520px;
+    }
+
+    .service-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .services-hero {
+      padding: 64px 0;
+    }
+
+    .hero-actions a {
+      width: 100%;
+    }
+
+    .service-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .service-card {
+      min-height: auto;
+    }
+
+    .final-cta {
+      padding: 72px 0;
+    }
+  }
+</style>

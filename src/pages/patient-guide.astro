@@ -1,0 +1,296 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { actions, clinic } from "@data/site";
+
+const guideItems = [
+  {
+    title: "Bring previous records",
+    text: "Carry prescriptions, scans, blood tests, pulmonary function tests, sleep studies and discharge summaries if available."
+  },
+  {
+    title: "Write symptoms simply",
+    text: "Note when symptoms started, what makes them worse, what helps, and any medicines already tried."
+  },
+  {
+    title: "Share current medicines",
+    text: "Bring medicine strips or photos, especially inhalers, insulin, thyroid medicine, blood pressure medicine or antibiotics."
+  },
+  {
+    title: "Ask questions freely",
+    text: "The visit is meant to help you understand what is happening and what the next step should be."
+  }
+];
+
+const urgentSymptoms = [
+  "Severe breathlessness",
+  "Chest pain",
+  "Bluish lips",
+  "Confusion",
+  "Fainting",
+  "Sudden worsening"
+];
+---
+
+<BaseLayout
+  title="Patient Guide | PulmoPlus Noida"
+  description="Prepare for your first PulmoPlus visit with clear guidance on what to bring, how appointments work and when symptoms need urgent care."
+>
+  <section class="page-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Patient guide</p>
+        <h1>Your first visit should feel clear before you arrive.</h1>
+        <p>
+          A calm guide for patients and families visiting PulmoPlus for respiratory,
+          sleep, chest, critical care follow-up or general medical concerns.
+        </p>
+        <div class="actions">
+          <a class="primary focus-ring" href={actions.book}>Book appointment</a>
+          <a class="secondary focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">Ask on WhatsApp</a>
+        </div>
+      </div>
+
+      <aside class="note">
+        <h2>Emergency note</h2>
+        <p>
+          If symptoms are severe or sudden, do not wait for a clinic appointment.
+          Seek urgent emergency care immediately.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Before your visit</p>
+        <h2>Bring what you have. The clinic will help organize the story.</h2>
+      </div>
+
+      <div class="steps">
+        {guideItems.map((item, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section calm">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">How appointments work</p>
+        <h2>Simple request, direct confirmation.</h2>
+      </div>
+
+      <div class="copy-flow">
+        <p>
+          You can request an appointment online, call, or message PulmoPlus on WhatsApp.
+          The clinic uses a fixed daily consultation slot from
+          {clinic.dailyConsultationSlot} and confirms scheduling directly with patients.
+        </p>
+        <p>
+          For video consultations or report review, the clinic may also confirm
+          the reason, payment process and sharing method before the appointment.
+        </p>
+        <a class="text-link focus-ring" href="/book-appointment/">Request appointment</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section urgent">
+    <div class="container urgent-box">
+      <div>
+        <p class="eyebrow">When not to wait</p>
+        <h2>Urgent symptoms need urgent care.</h2>
+      </div>
+
+      <ul>
+        {urgentSymptoms.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .hero-grid,
+  .split,
+  .urgent-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: start;
+  }
+
+  .split {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 850px;
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4.6vw, 4rem);
+  }
+
+  .page-hero p,
+  .copy-flow p,
+  .note p {
+    max-width: 660px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary,
+  .secondary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+  }
+
+  .primary {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .note {
+    border: 1px solid rgba(231, 154, 139, 0.35);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 26px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .note h2 {
+    margin: 0;
+    font-size: 1.45rem;
+  }
+
+  .steps {
+    display: grid;
+    gap: 0;
+  }
+
+  .steps article {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 8px 18px;
+    border-top: 1px solid rgba(15, 111, 120, 0.16);
+    padding: 22px 0;
+  }
+
+  .steps span {
+    grid-row: span 2;
+    color: #0f6f78;
+    font-weight: 900;
+  }
+
+  .steps h3 {
+    margin: 0;
+    color: #1d2b2e;
+    font-size: 1.24rem;
+  }
+
+  .steps p {
+    margin: 0;
+    color: #536b70;
+  }
+
+  .calm {
+    background: #ffffff;
+  }
+
+  .text-link {
+    display: inline-flex;
+    margin-top: 24px;
+    color: #0f6f78;
+    font-weight: 850;
+  }
+
+  .urgent {
+    background: #eef7f7;
+  }
+
+  .urgent-box {
+    border-radius: 8px;
+    background: white;
+    padding: clamp(26px, 5vw, 52px);
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .urgent-box ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .urgent-box li {
+    border-radius: 999px;
+    background: #f7f4ef;
+    color: #1d2b2e;
+    padding: 10px 13px;
+    font-weight: 850;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .split,
+    .urgent-box {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .page-hero {
+      padding: 64px 0;
+    }
+
+    .actions a {
+      width: 100%;
+    }
+  }
+</style>

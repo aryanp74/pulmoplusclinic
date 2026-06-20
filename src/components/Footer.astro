@@ -1,0 +1,237 @@
+---
+import { clinic, navigation, actions } from "@data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-main">
+      <a class="footer-brand focus-ring" href="/">
+        <strong>{clinic.name}</strong>
+        <span>{clinic.tagline}</span>
+      </a>
+
+      <p>
+        Respiratory, sleep, critical care and general medicine consultation in Noida,
+        led by Dr. Priyadarshi J. Kumar.
+      </p>
+
+      <div class="footer-actions">
+        <a class="primary focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-columns">
+      <div>
+        <h2>Visit</h2>
+        <p>{clinic.address}</p>
+        <a class="text-link focus-ring" href={actions.directions} target="_blank" rel="noreferrer">
+          Get directions
+        </a>
+      </div>
+
+      <div>
+        <h2>Contact</h2>
+        <p>
+          <a class="focus-ring" href={actions.call}>{clinic.phone}</a><br />
+          <a class="focus-ring" href={`mailto:${clinic.email}`}>{clinic.email}</a>
+        </p>
+      </div>
+
+      <div>
+        <h2>Consultation</h2>
+        <p>
+          {clinic.consultationHours.map((item) => (
+            <>
+              {item}<br />
+            </>
+          ))}
+        </p>
+      </div>
+
+      <nav aria-label="Footer navigation">
+        <h2>Pages</h2>
+        {navigation.map((item) => (
+          <a class="focus-ring" href={item.href}>{item.label}</a>
+        ))}
+        <a class="focus-ring" href="/privacy-policy/">Privacy Policy</a>
+        <a class="focus-ring" href="/medical-disclaimer/">Medical Disclaimer</a>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <p>Copyright {year} {clinic.name}. All rights reserved.</p>
+      <p>
+        Website information is educational and does not replace direct medical consultation.
+        For emergencies, seek urgent medical care.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #1d2b2e;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .footer-inner {
+    width: min(1120px, calc(100% - 32px));
+    margin-inline: auto;
+    padding: 72px 0 34px;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 32px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .footer-brand {
+    display: grid;
+    width: fit-content;
+    gap: 6px;
+  }
+
+  .footer-brand strong {
+    color: white;
+    font-size: clamp(2rem, 5vw, 4.6rem);
+    line-height: 0.9;
+    letter-spacing: 0;
+  }
+
+  .footer-brand span {
+    color: #9edfe3;
+    font-weight: 800;
+  }
+
+  .footer-main p {
+    max-width: 620px;
+    margin: 22px 0 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 1rem;
+  }
+
+  .footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .footer-actions a {
+    border-radius: 999px;
+    padding: 12px 17px;
+    font-weight: 850;
+  }
+
+  .primary {
+    background: #9edfe3;
+    color: #1d2b2e;
+  }
+
+  .secondary {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: white;
+  }
+
+  .footer-columns {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 34px;
+    padding: 44px 0;
+  }
+
+  .footer-columns h2 {
+    margin: 0 0 14px;
+    color: white;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-columns p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.95rem;
+  }
+
+  .footer-columns nav {
+    display: grid;
+    align-content: start;
+    gap: 9px;
+  }
+
+  .footer-columns a {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.95rem;
+  }
+
+  .footer-columns a:hover,
+  .text-link {
+    color: #9edfe3;
+  }
+
+  .text-link {
+    display: inline-flex;
+    margin-top: 14px;
+    font-weight: 800;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding-top: 22px;
+    color: rgba(255, 255, 255, 0.56);
+    font-size: 0.84rem;
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    max-width: 560px;
+  }
+
+  @media (max-width: 860px) {
+    .footer-main {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .footer-actions {
+      justify-content: flex-start;
+    }
+
+    .footer-columns {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-inner {
+      width: min(100% - 24px, 1120px);
+      padding-top: 56px;
+    }
+
+    .footer-columns {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-actions a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

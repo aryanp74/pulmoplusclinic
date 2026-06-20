@@ -1,0 +1,197 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { resources } from "@data/resources";
+import { actions } from "@data/site";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return resources.map((resource) => ({
+    params: { slug: resource.slug },
+    props: { resource }
+  }));
+}
+
+const { resource } = Astro.props;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  name: resource.title,
+  description: resource.summary,
+  reviewedBy: {
+    "@type": "Person",
+    name: resource.reviewedBy
+  }
+};
+---
+
+<BaseLayout
+  title={`${resource.title} | PulmoPlus Resources`}
+  description={resource.summary}
+  structuredData={articleSchema}
+>
+  <section class="article-hero">
+    <div class="container">
+      <p class="eyebrow">{resource.category}</p>
+      <h1>{resource.title}</h1>
+      <p>{resource.summary}</p>
+      <small>Reviewed by {resource.reviewedBy}</small>
+    </div>
+  </section>
+
+  <article class="section article-section">
+    <div class="container article-grid">
+      <aside>
+        <p class="eyebrow">Medical note</p>
+        <p>
+          This guide is educational. It does not diagnose you or replace a consultation
+          with a doctor.
+        </p>
+      </aside>
+
+      <div class="article-flow">
+        {resource.sections.map((section) => (
+          <section>
+            <h2>{section.title}</h2>
+            <p>{section.body}</p>
+          </section>
+        ))}
+
+        <section class="cta-box">
+          <h2>Need help understanding your symptoms or reports?</h2>
+          <p>
+            Request an appointment and bring your available reports. The clinic will
+            guide the next step after review.
+          </p>
+          <a class="primary focus-ring" href={actions.book}>Book appointment</a>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .article-hero .container {
+    max-width: 920px;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 3.6vw, 3.2rem);
+  }
+
+  .article-hero p {
+    max-width: 760px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.14rem;
+  }
+
+  .article-hero small {
+    display: block;
+    margin-top: 22px;
+    color: #0f6f78;
+    font-weight: 850;
+  }
+
+  .article-section {
+    background: white;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: clamp(34px, 6vw, 84px);
+    align-items: start;
+  }
+
+  aside {
+    position: sticky;
+    top: 104px;
+    border-top: 1px solid rgba(15, 111, 120, 0.2);
+    padding-top: 18px;
+  }
+
+  aside p:last-child {
+    margin: 14px 0 0;
+    color: #536b70;
+    font-weight: 700;
+  }
+
+  .article-flow {
+    display: grid;
+    gap: 52px;
+  }
+
+  .article-flow section {
+    border-top: 1px solid rgba(15, 111, 120, 0.14);
+    padding-top: 24px;
+  }
+
+  .article-flow h2 {
+    margin: 0;
+  }
+
+  .article-flow p {
+    max-width: 760px;
+    margin: 18px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .cta-box {
+    border-top: 0 !important;
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 28px !important;
+  }
+
+  .primary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    border-radius: 999px;
+    background: #0f6f78;
+    color: white;
+    padding: 0 20px;
+    font-weight: 850;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  @media (max-width: 860px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    aside {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .article-hero {
+      padding: 64px 0;
+    }
+  }
+</style>

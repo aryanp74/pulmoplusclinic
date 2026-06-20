@@ -1,0 +1,205 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { testimonials } from "@data/testimonials";
+import { actions } from "@data/site";
+---
+
+<BaseLayout
+  title="Patient Testimonials | PulmoPlus Noida"
+  description="Read patient and family feedback about PulmoPlus respiratory, sleep and chest care in Noida."
+>
+  <section class="page-hero">
+    <div class="container hero-inner">
+      <p class="eyebrow">Testimonials</p>
+      <h1>Care should feel clear, careful and human.</h1>
+      <p>
+        These reviews reflect how patients and families describe communication,
+        guidance and overall care at PulmoPlus.
+      </p>
+      <div class="actions">
+        <a class="primary focus-ring" href={actions.book}>Book appointment</a>
+        <a class="secondary focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">
+          WhatsApp PulmoPlus
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials-section">
+    <div class="container testimonial-grid">
+      {testimonials.map((testimonial) => (
+        <figure>
+          <blockquote>{testimonial.quote}</blockquote>
+          <figcaption>
+            <strong>{testimonial.name}</strong>
+            <span>{testimonial.condition}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <section class="section note-section">
+    <div class="container note-box">
+      <div>
+        <p class="eyebrow">Review policy</p>
+        <h2>Reviews are shared with care and context.</h2>
+      </div>
+      <p>
+        Testimonials highlight patient experience and trust. They do not replace
+        a consultation, diagnosis or personalised medical advice.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .hero-inner {
+    max-width: 900px;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+  }
+
+  .page-hero p,
+  .note-box p {
+    max-width: 680px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary,
+  .secondary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+  }
+
+  .primary {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .testimonials-section {
+    background: #ffffff;
+  }
+
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  figure {
+    margin: 0;
+    border: 1px solid rgba(217, 231, 233, 0.96);
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 28px;
+  }
+
+  blockquote {
+    margin: 0;
+    color: #1d2b2e;
+    font-size: 1.12rem;
+    line-height: 1.5;
+  }
+
+  figcaption {
+    display: grid;
+    gap: 4px;
+    margin-top: 26px;
+  }
+
+  figcaption strong {
+    color: #0f6f78;
+  }
+
+  figcaption span {
+    color: #789097;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .note-section {
+    background: #eef7f7;
+  }
+
+  .note-box {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: center;
+    border-radius: 8px;
+    background: white;
+    padding: clamp(26px, 5vw, 52px);
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .note-box p {
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .testimonial-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .note-box {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .page-hero {
+      padding: 64px 0;
+    }
+
+    .actions a {
+      width: 100%;
+    }
+
+    .testimonial-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

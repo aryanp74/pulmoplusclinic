@@ -1,0 +1,271 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { resources } from "@data/resources";
+import { actions } from "@data/site";
+---
+
+<BaseLayout
+  title="Resources | PulmoPlus Patient Education"
+  description="Patient-friendly PulmoPlus resources on breathing, lung health, sleep apnea, snoring, procedures and first visits."
+>
+  <section class="page-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Resources</p>
+        <h1>Patient education without panic.</h1>
+        <p>
+          Simple, reviewed guides to help patients and families understand symptoms,
+          reports, procedures and first visits before consultation.
+        </p>
+        <div class="actions">
+          <a class="primary focus-ring" href={actions.book}>Book appointment</a>
+          <a class="secondary focus-ring" href="/patient-guide/">Patient guide</a>
+        </div>
+      </div>
+
+      <aside class="resource-note">
+        <h2>Medical note</h2>
+        <p>
+          Articles are educational and do not replace direct consultation with a doctor.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section resources-section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Featured guides</p>
+        <h2>Start with the basics.</h2>
+      </div>
+
+      <div class="resource-grid">
+        {resources.map((resource) => (
+          <a class="resource-card focus-ring" href={`/resources/${resource.slug}/`}>
+            <span>{resource.category}</span>
+            <h3>{resource.title}</h3>
+            <p>{resource.summary}</p>
+            <small>Reviewed by {resource.reviewedBy}</small>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section topics-section">
+    <div class="container topics-box">
+      <div>
+        <p class="eyebrow">Future topics</p>
+        <h2>Build trust through useful explanations.</h2>
+      </div>
+
+      <ul>
+        <li>Breathing and lung health</li>
+        <li>Asthma and COPD</li>
+        <li>Sleep apnea and snoring</li>
+        <li>Procedures explained</li>
+        <li>When symptoms are urgent</li>
+        <li>General health</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .hero-grid,
+  .topics-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: start;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 850px;
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+  }
+
+  .page-hero p,
+  .resource-note p {
+    max-width: 660px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary,
+  .secondary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+  }
+
+  .primary {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .resource-note {
+    border: 1px solid rgba(217, 231, 233, 0.96);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 26px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.12);
+  }
+
+  .resource-note h2 {
+    margin: 0;
+    font-size: 1.45rem;
+  }
+
+  .resources-section {
+    background: #ffffff;
+  }
+
+  .section-head {
+    max-width: 760px;
+    margin-bottom: 38px;
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .resource-card {
+    min-height: 300px;
+    border: 1px solid rgba(217, 231, 233, 0.95);
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 24px;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .resource-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 111, 120, 0.28);
+    box-shadow: 0 18px 50px rgba(29, 43, 46, 0.1);
+  }
+
+  .resource-card span {
+    color: #0f6f78;
+    font-size: 0.76rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .resource-card h3 {
+    margin: 18px 0 10px;
+    color: #1d2b2e;
+    font-size: 1.45rem;
+    line-height: 1.08;
+  }
+
+  .resource-card p {
+    margin: 0;
+    color: #536b70;
+  }
+
+  .resource-card small {
+    display: block;
+    margin-top: 24px;
+    color: #789097;
+    font-weight: 750;
+  }
+
+  .topics-section {
+    background: #eef7f7;
+  }
+
+  .topics-box {
+    border-radius: 8px;
+    background: white;
+    padding: clamp(26px, 5vw, 52px);
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .topics-box ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .topics-box li {
+    border-radius: 999px;
+    background: #f7f4ef;
+    color: #1d2b2e;
+    padding: 10px 13px;
+    font-weight: 850;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .topics-box {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .page-hero {
+      padding: 64px 0;
+    }
+
+    .actions a {
+      width: 100%;
+    }
+
+    .resource-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-card {
+      min-height: auto;
+    }
+  }
+</style>

@@ -1,0 +1,57 @@
+<button
+  class="comfort-toggle focus-ring"
+  type="button"
+  aria-pressed="false"
+  data-comfort-toggle
+>
+  Comfort mode
+</button>
+
+<script>
+  const toggle = document.querySelector("[data-comfort-toggle]");
+
+  function setComfortMode(enabled: boolean) {
+    document.documentElement.dataset.comfort = enabled ? "true" : "false";
+    localStorage.setItem("pulmoplus-comfort-mode", enabled ? "true" : "false");
+
+    if (toggle instanceof HTMLButtonElement) {
+      toggle.setAttribute("aria-pressed", String(enabled));
+      toggle.textContent = enabled ? "Standard mode" : "Comfort mode";
+    }
+  }
+
+  const saved = localStorage.getItem("pulmoplus-comfort-mode") === "true";
+  setComfortMode(saved);
+
+  toggle?.addEventListener("click", () => {
+    const enabled = document.documentElement.dataset.comfort !== "true";
+    setComfortMode(enabled);
+  });
+</script>
+
+<style>
+  .comfort-toggle {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 80;
+    min-height: 42px;
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    color: #0f6f78;
+    padding: 0 14px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    box-shadow: 0 14px 38px rgba(29, 43, 46, 0.14);
+    backdrop-filter: blur(18px);
+    cursor: pointer;
+  }
+
+  @media (max-width: 760px) {
+    .comfort-toggle {
+      right: 12px;
+      bottom: 76px;
+    }
+  }
+</style>

@@ -1,0 +1,272 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { clinic, actions } from "@data/site";
+---
+
+<BaseLayout
+  title="Contact PulmoPlus | Sector 134 Noida"
+  description="Contact PulmoPlus in Sector 134, Noida. Call, WhatsApp, get directions or request an appointment."
+>
+  <section class="contact-hero">
+    <div class="container contact-grid">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h1>Visit PulmoPlus in Sector 134, Noida.</h1>
+        <p>{clinic.address}</p>
+
+        <div class="actions">
+          <a class="primary focus-ring" href={actions.directions} target="_blank" rel="noreferrer">Get directions</a>
+          <a class="secondary focus-ring" href={actions.call}>Call {clinic.phone}</a>
+        </div>
+      </div>
+
+      <aside class="contact-card">
+        <h2>Quick contact</h2>
+        <a class="line focus-ring" href={actions.call}>{clinic.phone}</a>
+        <a class="line focus-ring" href={actions.whatsapp} target="_blank" rel="noreferrer">WhatsApp PulmoPlus</a>
+        <a class="line focus-ring" href={`mailto:${clinic.email}`}>{clinic.email}</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container info-grid">
+      <article>
+        <p class="eyebrow">Timing</p>
+        <h2>Consultation hours</h2>
+        {clinic.consultationHours.map((item) => (
+          <p class="big">{item}</p>
+        ))}
+        <small>{clinic.openingNote}</small>
+      </article>
+
+      <article>
+        <p class="eyebrow">Address</p>
+        <h2>Clinic location</h2>
+        <p>{clinic.address}</p>
+        <a class="text-link focus-ring" href={actions.directions} target="_blank" rel="noreferrer">
+          Open Google Maps
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section map-section">
+    <div class="container map-box">
+      <div>
+        <p class="eyebrow">Directions</p>
+        <h2>Use Google Maps for the most accurate route.</h2>
+        <p>
+          Tap directions before leaving, especially if you are coming from another
+          part of Noida, Greater Noida or Delhi NCR.
+        </p>
+      </div>
+
+      <a class="map-placeholder focus-ring" href={actions.directions} target="_blank" rel="noreferrer">
+        <img
+          src={clinic.consultationRoomImage ?? clinic.exteriorImage}
+          alt="PulmoPlus clinic consultation room"
+          loading="lazy"
+        />
+        <span>Open map</span>
+        <strong>Sector 134, Noida</strong>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .contact-grid,
+  .info-grid,
+  .map-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: clamp(34px, 6vw, 84px);
+    align-items: start;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    max-width: 850px;
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+  }
+
+  .contact-hero p,
+  article p,
+  .map-box p {
+    max-width: 660px;
+    margin: 24px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .primary,
+  .secondary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-weight: 850;
+  }
+
+  .primary {
+    background: #0f6f78;
+    color: white;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  .secondary {
+    border: 1px solid rgba(15, 111, 120, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    color: #0f6f78;
+  }
+
+  .contact-card,
+  article {
+    border-radius: 8px;
+    background: white;
+    padding: 28px;
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .contact-card h2 {
+    margin: 0 0 16px;
+    font-size: 1.45rem;
+  }
+
+  .line {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    border-top: 1px solid rgba(15, 111, 120, 0.14);
+    color: #0f6f78;
+    font-weight: 850;
+  }
+
+  article .big {
+    color: #0f6f78;
+    font-size: 1.35rem;
+    font-weight: 900;
+  }
+
+  article small {
+    display: block;
+    margin-top: 18px;
+    color: #789097;
+  }
+
+  .text-link {
+    display: inline-flex;
+    margin-top: 24px;
+    color: #0f6f78;
+    font-weight: 850;
+  }
+
+  .map-section {
+    background: #eef7f7;
+  }
+
+  .map-box {
+    border-radius: 8px;
+    background: white;
+    padding: clamp(26px, 5vw, 52px);
+    box-shadow: 0 24px 80px rgba(15, 111, 120, 0.1);
+  }
+
+  .map-placeholder {
+    position: relative;
+    min-height: 300px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(15, 111, 120, 0.05), rgba(15, 111, 120, 0.28)),
+      radial-gradient(circle at 35% 30%, rgba(158, 223, 227, 0.95), transparent 26%),
+      #f7f4ef;
+    padding: 24px;
+  }
+
+  .map-placeholder img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .map-placeholder::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(15, 111, 120, 0.08), rgba(15, 111, 120, 0.48));
+  }
+
+  .map-placeholder span {
+    position: relative;
+    z-index: 2;
+    color: #0f6f78;
+    font-weight: 900;
+  }
+
+  .map-placeholder strong {
+    position: relative;
+    z-index: 2;
+    margin-top: 8px;
+    color: white;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 0.95;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid,
+    .info-grid,
+    .map-box {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .contact-hero {
+      padding: 64px 0;
+    }
+
+    .actions a {
+      width: 100%;
+    }
+  }
+</style>

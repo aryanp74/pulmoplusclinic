@@ -1,0 +1,101 @@
+---
+import { seoDefaults, clinic, doctor } from "@data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title = seoDefaults.title,
+  description = seoDefaults.description,
+  image = seoDefaults.image,
+  noindex = false,
+  structuredData
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site || "https://pulmoplus.in").toString();
+const absoluteImage = new URL(image, Astro.site || "https://pulmoplus.in").toString();
+
+const defaultSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    name: clinic.name,
+    description: clinic.description,
+    telephone: `+91${clinic.phone}`,
+    email: clinic.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Shop No. 3, Nangli T-Point Market, Sector 134",
+      addressLocality: "Noida",
+      addressRegion: "Uttar Pradesh",
+      postalCode: "201304",
+      addressCountry: "IN"
+    },
+    medicalSpecialty: [
+      "Pulmonary",
+      "SleepMedicine",
+      "CriticalCare",
+      "GeneralPractice"
+    ],
+    url: canonical
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    name: doctor.fullName,
+    telephone: `+91${clinic.phone}`,
+    medicalSpecialty: [
+      "Pulmonary",
+      "SleepMedicine",
+      "CriticalCare",
+      "GeneralPractice"
+    ],
+    worksFor: {
+      "@type": "MedicalClinic",
+      name: clinic.name
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Shop No. 3, Nangli T-Point Market, Sector 134",
+      addressLocality: "Noida",
+      addressRegion: "Uttar Pradesh",
+      postalCode: "201304",
+      addressCountry: "IN"
+    }
+  }
+];
+
+const schema = structuredData
+  ? Array.isArray(structuredData)
+    ? [...defaultSchema, ...structuredData]
+    : [...defaultSchema, structuredData]
+  : defaultSchema;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={clinic.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={absoluteImage} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={absoluteImage} />
+
+<meta name="theme-color" content="#F7F4EF" />
+<meta name="format-detection" content="telephone=yes" />
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

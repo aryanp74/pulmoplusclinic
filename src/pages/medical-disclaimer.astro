@@ -1,0 +1,161 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { actions } from "@data/site";
+---
+
+<BaseLayout
+  title="Medical Disclaimer | PulmoPlus"
+  description="PulmoPlus medical disclaimer for website information, emergency guidance and consultation limitations."
+>
+  <section class="legal-hero">
+    <div class="container">
+      <p class="eyebrow">Medical Disclaimer</p>
+      <h1>This website is educational, not emergency care.</h1>
+      <p>
+        PulmoPlus website content helps patients understand care options, but it does
+        not diagnose or replace direct medical consultation.
+      </p>
+    </div>
+  </section>
+
+  <section class="section legal-section">
+    <div class="container legal-flow">
+      <section>
+        <h2>No online diagnosis</h2>
+        <p>
+          Information on this website is general and educational. It should not be
+          treated as personal medical advice or a diagnosis.
+        </p>
+      </section>
+
+      <section>
+        <h2>Consult a doctor</h2>
+        <p>
+          Medical decisions should be made after direct consultation with a qualified
+          doctor who can review your symptoms, examination and reports.
+        </p>
+      </section>
+
+      <section class="urgent">
+        <h2>Emergency symptoms</h2>
+        <p>
+          If you are experiencing severe breathlessness, chest pain, bluish lips,
+          confusion, fainting or a medical emergency, seek urgent emergency care
+          immediately or call local emergency services.
+        </p>
+      </section>
+
+      <section>
+        <h2>Teleconsultation limits</h2>
+        <p>
+          Video consultation or report review may have limitations and may not be
+          suitable for emergencies, severe symptoms or conditions that require physical
+          examination.
+        </p>
+      </section>
+
+      <section>
+        <h2>No guaranteed outcomes</h2>
+        <p>
+          PulmoPlus does not guarantee cures or specific outcomes. Treatment response
+          depends on the patient, condition, reports and clinical findings.
+        </p>
+      </section>
+
+      <section class="cta-box">
+        <h2>Need an appointment?</h2>
+        <p>Request a consultation or contact PulmoPlus directly.</p>
+        <a class="primary focus-ring" href={actions.book}>Book appointment</a>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-hero {
+    padding: 84px 0;
+    background:
+      radial-gradient(circle at 82% 28%, rgba(158, 223, 227, 0.56), transparent 32%),
+      linear-gradient(180deg, #f7f4ef 0%, #eef7f7 100%);
+  }
+
+  .legal-hero .container,
+  .legal-flow {
+    max-width: 860px;
+  }
+
+  h1,
+  h2 {
+    margin: 12px 0 0;
+    color: #1d2b2e;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5.8vw, 5.4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.7rem, 3.2vw, 2.8rem);
+  }
+
+  .legal-hero p,
+  .legal-flow p {
+    margin: 22px 0 0;
+    color: #536b70;
+    font-size: 1.08rem;
+  }
+
+  .legal-section {
+    background: white;
+  }
+
+  .legal-flow {
+    display: grid;
+    gap: 42px;
+  }
+
+  .legal-flow section {
+    border-top: 1px solid rgba(15, 111, 120, 0.14);
+    padding-top: 24px;
+  }
+
+  .legal-flow h2 {
+    margin: 0;
+  }
+
+  .urgent {
+    border-top: 0 !important;
+    border-radius: 8px;
+    background: rgba(231, 154, 139, 0.14);
+    padding: 28px !important;
+  }
+
+  .cta-box {
+    border-top: 0 !important;
+    border-radius: 8px;
+    background: #f7f4ef;
+    padding: 28px !important;
+  }
+
+  .primary {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    border-radius: 999px;
+    background: #0f6f78;
+    color: white;
+    padding: 0 20px;
+    font-weight: 850;
+    box-shadow: 0 18px 40px rgba(15, 111, 120, 0.2);
+  }
+
+  @media (max-width: 620px) {
+    .legal-hero {
+      padding: 64px 0;
+    }
+  }
+</style>
